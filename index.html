@@ -15,289 +15,658 @@
   --surface:#0b0f1c;
   --card:#0f1525;
   --card2:#111828;
-  --border:rgba(255,255,255,0.06);
-  --border2:rgba(255,255,255,0.12);
+  --border:rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.13);
   --c1:#05e8cb;
   --c2:#0a6cff;
   --c3:#7c3aed;
   --text:#eaf0f8;
   --muted:#6b7b96;
   --muted2:#9aa5b8;
-  --r:16px;
-  --r2:24px;
+  --r:12px;
+  --r2:20px;
+  --max:1180px;
+  --pad:5vw;
 }
 
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'Cabinet Grotesk',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;cursor:none}
-
-/* CUSTOM CURSOR */
-.cursor{position:fixed;width:10px;height:10px;background:var(--c1);border-radius:50%;pointer-events:none;z-index:99999;transition:transform .15s ease,opacity .2s;mix-blend-mode:difference}
-.cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid rgba(5,232,203,0.4);border-radius:50%;pointer-events:none;z-index:99998;transition:transform .35s cubic-bezier(.25,.46,.45,.94),opacity .2s}
-body:hover .cursor{opacity:1}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  overflow-x:hidden;
+  cursor:default;
+}
 
 /* GRAIN */
-body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:9997}
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity:.022;
+  pointer-events:none;
+  z-index:9997;
+}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 4vw;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
-nav.scrolled{background:rgba(6,8,16,.85);backdrop-filter:blur(24px);border-color:var(--border)}
-.logo{font-family:'Clash Display',sans-serif;font-weight:700;font-size:1.25rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:10px;letter-spacing:-.3px}
-.logo-mark{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--c1),var(--c2));display:grid;place-items:center;font-size:.9rem;flex-shrink:0;position:relative;overflow:hidden}
-.logo-mark::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.2),transparent);border-radius:inherit}
-.nav-links{display:flex;gap:2.5rem;list-style:none}
-.nav-links a{color:var(--muted);text-decoration:none;font-size:.875rem;font-weight:500;letter-spacing:.2px;transition:color .2s;position:relative}
-.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--c1);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.25,.46,.45,.94)}
+/* ─── NAV ─────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:68px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 var(--pad);
+  transition:background .3s,border-color .3s;
+  border-bottom:1px solid transparent;
+}
+nav.scrolled{
+  background:rgba(6,8,16,.9);
+  backdrop-filter:blur(20px);
+  border-color:var(--border);
+}
+.logo{
+  font-family:'Clash Display',sans-serif;
+  font-weight:700;font-size:1.2rem;
+  color:var(--text);text-decoration:none;
+  display:flex;align-items:center;gap:10px;
+  letter-spacing:-.3px;
+}
+.logo-mark{
+  width:34px;height:34px;border-radius:9px;
+  background:linear-gradient(135deg,var(--c1),var(--c2));
+  display:grid;place-items:center;
+  font-size:.85rem;flex-shrink:0;
+}
+.nav-links{display:flex;gap:2.2rem;list-style:none}
+.nav-links a{
+  color:var(--muted);text-decoration:none;
+  font-size:.875rem;font-weight:500;
+  letter-spacing:.1px;transition:color .2s;
+}
 .nav-links a:hover{color:var(--text)}
-.nav-links a:hover::after{transform:scaleX(1)}
-.nav-pill{background:transparent;border:1.5px solid var(--c1);color:var(--c1);padding:8px 20px;border-radius:100px;font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:.82rem;cursor:none;transition:all .25s;letter-spacing:.3px}
-.nav-pill:hover{background:var(--c1);color:#060810;transform:translateY(-1px)}
-@media(max-width:700px){.nav-links{display:none}}
+.nav-pill{
+  background:transparent;
+  border:1.5px solid var(--c1);
+  color:var(--c1);
+  padding:7px 18px;border-radius:8px;
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-weight:700;font-size:.82rem;
+  cursor:pointer;transition:all .22s;
+  letter-spacing:.2px;
+}
+.nav-pill:hover{background:var(--c1);color:#060810}
 
-/* HERO */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 5vw 80px;position:relative;overflow:hidden}
-.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(5,232,203,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(5,232,203,.035) 1px,transparent 1px);background-size:72px 72px;mask-image:radial-gradient(ellipse 70% 55% at 50% 50%,black 10%,transparent 75%)}
+/* Hamburger */
+.nav-hamburger{
+  display:none;
+  flex-direction:column;gap:5px;
+  background:none;border:none;cursor:pointer;padding:4px;
+}
+.nav-hamburger span{
+  display:block;width:22px;height:2px;
+  background:var(--muted2);border-radius:2px;
+  transition:all .25s;
+}
+.mobile-menu{
+  display:none;
+  position:fixed;top:68px;left:0;right:0;
+  background:rgba(6,8,16,.97);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:1.5rem var(--pad);
+  flex-direction:column;gap:1.2rem;
+  z-index:199;
+}
+.mobile-menu.open{display:flex}
+.mobile-menu a{
+  color:var(--muted2);text-decoration:none;
+  font-size:1rem;font-weight:500;
+  transition:color .2s;padding:.3rem 0;
+  border-bottom:1px solid var(--border);
+}
+.mobile-menu a:last-child{border-bottom:none}
+.mobile-menu a:hover{color:var(--c1)}
+
+@media(max-width:860px){
+  .nav-links,.nav-pill{display:none}
+  .nav-hamburger{display:flex}
+}
+
+/* ─── HERO ────────────────────────────────────── */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  text-align:center;
+  padding:120px var(--pad) 80px;
+  position:relative;overflow:hidden;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(5,232,203,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(5,232,203,.03) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:radial-gradient(ellipse 70% 55% at 50% 50%,black 10%,transparent 75%);
+}
 .orb{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none}
-.orb-1{width:600px;height:600px;background:radial-gradient(circle,rgba(5,232,203,.15),transparent 70%);top:-20%;left:-10%;animation:orbFloat 18s ease-in-out infinite}
-.orb-2{width:500px;height:500px;background:radial-gradient(circle,rgba(10,108,255,.13),transparent 70%);bottom:-10%;right:-5%;animation:orbFloat 22s ease-in-out infinite reverse}
-.orb-3{width:350px;height:350px;background:radial-gradient(circle,rgba(124,58,237,.1),transparent 70%);top:40%;left:40%;animation:orbFloat 15s ease-in-out infinite .5s}
-@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.05)}66%{transform:translate(-15px,25px) scale(.97)}}
+.orb-1{width:560px;height:560px;background:radial-gradient(circle,rgba(5,232,203,.14),transparent 70%);top:-20%;left:-10%;animation:orbFloat 18s ease-in-out infinite}
+.orb-2{width:480px;height:480px;background:radial-gradient(circle,rgba(10,108,255,.12),transparent 70%);bottom:-10%;right:-5%;animation:orbFloat 22s ease-in-out infinite reverse}
+.orb-3{width:320px;height:320px;background:radial-gradient(circle,rgba(124,58,237,.09),transparent 70%);top:40%;left:40%;animation:orbFloat 15s ease-in-out infinite .5s}
+@keyframes orbFloat{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(30px,-20px) scale(1.04)}
+  66%{transform:translate(-15px,25px) scale(.97)}
+}
 
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(5,232,203,.3);background:rgba(5,232,203,.06);border-radius:100px;padding:5px 14px 5px 8px;font-size:.72rem;font-weight:700;color:var(--c1);letter-spacing:1px;text-transform:uppercase;margin-bottom:2rem;animation:fadeUp .6s ease both}
-.live-dot{width:6px;height:6px;background:var(--c1);border-radius:50%;animation:livePulse 2s ease infinite}
-@keyframes livePulse{0%,100%{box-shadow:0 0 0 0 rgba(5,232,203,.7)}50%{box-shadow:0 0 0 6px rgba(5,232,203,0)}}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid rgba(5,232,203,.28);
+  background:rgba(5,232,203,.05);
+  border-radius:8px;
+  padding:5px 14px 5px 10px;
+  font-size:.7rem;font-weight:700;
+  color:var(--c1);letter-spacing:1px;text-transform:uppercase;
+  margin-bottom:1.8rem;
+  animation:fadeUp .6s ease both;
+}
+.live-dot{
+  width:6px;height:6px;background:var(--c1);border-radius:50%;
+  animation:livePulse 2s ease infinite;
+}
+@keyframes livePulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(5,232,203,.7)}
+  50%{box-shadow:0 0 0 5px rgba(5,232,203,0)}
+}
 
-.hero-title{font-family:'Clash Display',sans-serif;font-size:clamp(3rem,7vw,5.8rem);font-weight:700;line-height:1;letter-spacing:-3px;max-width:900px;margin-bottom:1.5rem;animation:fadeUp .7s ease .1s both}
-.hero-title em{font-style:normal;background:linear-gradient(100deg,var(--c1) 0%,#4fd8f5 40%,var(--c2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative}
-.hero-title em::after{content:attr(data-text);position:absolute;left:0;top:0;background:linear-gradient(100deg,var(--c1),var(--c2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:blur(20px);opacity:.4;z-index:-1}
-.hero-sub{max-width:520px;color:var(--muted2);font-size:1.05rem;font-weight:400;margin-bottom:2.8rem;line-height:1.75;animation:fadeUp .7s ease .2s both}
+.hero-title{
+  font-family:'Clash Display',sans-serif;
+  font-size:clamp(2.8rem,6.5vw,5.4rem);
+  font-weight:700;
+  line-height:1.03;
+  letter-spacing:-2.5px;
+  max-width:860px;
+  margin-bottom:1.4rem;
+  animation:fadeUp .7s ease .1s both;
+}
+.hero-title em{
+  font-style:normal;
+  background:linear-gradient(100deg,var(--c1) 0%,#4fd8f5 40%,var(--c2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{
+  max-width:500px;
+  color:var(--muted2);font-size:1rem;font-weight:400;
+  margin-bottom:2.5rem;line-height:1.75;
+  animation:fadeUp .7s ease .2s both;
+}
 
-.hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeUp .7s ease .3s both}
-.btn-glow{position:relative;padding:14px 32px;border-radius:12px;font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:.9rem;cursor:none;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .25s;overflow:hidden;letter-spacing:.2px}
-.btn-glow-primary{background:linear-gradient(135deg,var(--c1),var(--c2));color:#060810;border:none}
-.btn-glow-primary::before{content:'';position:absolute;inset:-2px;background:linear-gradient(135deg,var(--c1),var(--c2));border-radius:14px;filter:blur(12px);opacity:0;transition:opacity .3s;z-index:-1}
-.btn-glow-primary:hover::before{opacity:.6}
-.btn-glow-primary:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(5,232,203,.25)}
-.btn-glow-ghost{background:rgba(255,255,255,.04);color:var(--text);border:1.5px solid var(--border2);backdrop-filter:blur(8px)}
-.btn-glow-ghost:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);transform:translateY(-1px)}
-.btn-arrow{display:inline-block;transition:transform .25s}
-.btn-glow:hover .btn-arrow{transform:translateX(4px)}
+.hero-ctas{
+  display:flex;gap:.9rem;flex-wrap:wrap;
+  justify-content:center;
+  animation:fadeUp .7s ease .3s both;
+}
+.btn-primary{
+  padding:13px 28px;border-radius:10px;
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-weight:700;font-size:.88rem;
+  cursor:pointer;text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:all .22s;letter-spacing:.15px;
+  background:linear-gradient(135deg,var(--c1),var(--c2));
+  color:#060810;border:none;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(5,232,203,.22)}
+.btn-ghost{
+  padding:13px 28px;border-radius:10px;
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-weight:700;font-size:.88rem;
+  cursor:pointer;text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:all .22s;letter-spacing:.15px;
+  background:rgba(255,255,255,.04);
+  color:var(--text);
+  border:1.5px solid var(--border2);
+}
+.btn-ghost:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.22);transform:translateY(-1px)}
 
-.hero-metrics{display:flex;gap:0;flex-wrap:wrap;justify-content:center;margin-top:4rem;width:100%;max-width:720px;animation:fadeUp .7s ease .4s both;border:1px solid var(--border);border-radius:var(--r2);background:rgba(255,255,255,.02);overflow:hidden;position:relative;z-index:2}
-.metric{flex:1;min-width:150px;padding:1.6rem 1.4rem;text-align:center;border-right:1px solid var(--border);position:relative;transition:background .2s}
+.hero-metrics{
+  display:flex;gap:0;flex-wrap:wrap;justify-content:center;
+  margin-top:3.5rem;width:100%;max-width:700px;
+  animation:fadeUp .7s ease .4s both;
+  border:1px solid var(--border);border-radius:var(--r2);
+  background:rgba(255,255,255,.025);overflow:hidden;
+  position:relative;z-index:2;
+}
+.metric{
+  flex:1;min-width:140px;
+  padding:1.5rem 1.2rem;text-align:center;
+  border-right:1px solid var(--border);
+}
 .metric:last-child{border-right:none}
-.metric:hover{background:rgba(5,232,203,.04)}
-.metric-val{font-family:'Clash Display',sans-serif;font-size:1.9rem;font-weight:700;background:linear-gradient(135deg,var(--c1),var(--c2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;margin-bottom:.3rem}
-.metric-lbl{font-size:.72rem;color:var(--muted);letter-spacing:.5px;font-weight:500;text-transform:uppercase}
+.metric-val{
+  font-family:'Clash Display',sans-serif;font-size:1.75rem;font-weight:700;
+  background:linear-gradient(135deg,var(--c1),var(--c2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1.1;margin-bottom:.3rem;
+}
+.metric-lbl{font-size:.68rem;color:var(--muted);letter-spacing:.5px;font-weight:600;text-transform:uppercase}
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 
 /* SCROLL INDICATOR */
-.scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--muted);font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;animation:fadeUp .7s ease .8s both}
-.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--c1),transparent);animation:scrollDrop 2s ease-in-out infinite}
-@keyframes scrollDrop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.scroll-hint{
+  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  color:var(--muted);font-size:.65rem;letter-spacing:1.5px;text-transform:uppercase;
+  animation:fadeUp .7s ease .8s both;
+}
+.scroll-line{
+  width:1px;height:36px;
+  background:linear-gradient(to bottom,var(--c1),transparent);
+  animation:scrollDrop 2s ease-in-out infinite;
+}
+@keyframes scrollDrop{
+  0%{transform:scaleY(0);transform-origin:top}
+  50%{transform:scaleY(1);transform-origin:top}
+  51%{transform:scaleY(1);transform-origin:bottom}
+  100%{transform:scaleY(0);transform-origin:bottom}
+}
 
 /* MARQUEE */
-.marquee-wrap{background:linear-gradient(135deg,rgba(5,232,203,.06),rgba(10,108,255,.06));border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:16px 0;overflow:hidden}
-.marquee-track{display:flex;gap:3rem;white-space:nowrap;animation:marquee 30s linear infinite}
-.marquee-item{display:inline-flex;align-items:center;gap:.6rem;font-size:.8rem;font-weight:600;color:var(--muted);letter-spacing:.5px}
-.marquee-sep{color:var(--c1);font-size:1.2rem}
+.marquee-wrap{
+  background:rgba(5,232,203,.035);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:14px 0;overflow:hidden;
+}
+.marquee-track{
+  display:flex;gap:3rem;white-space:nowrap;
+  animation:marquee 32s linear infinite;
+}
+.marquee-item{
+  display:inline-flex;align-items:center;gap:.6rem;
+  font-size:.78rem;font-weight:600;color:var(--muted);letter-spacing:.4px;
+}
+.marquee-sep{color:var(--c1)}
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* SHARED SECTION */
-section{padding:110px 5vw}
-.label{font-size:.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--c1);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
-.label::before{content:'';display:inline-block;width:18px;height:1.5px;background:var(--c1)}
-h2.big{font-family:'Clash Display',sans-serif;font-size:clamp(2.2rem,4vw,3.2rem);font-weight:700;letter-spacing:-1.5px;line-height:1.05;margin-bottom:1rem}
-.sub{color:var(--muted2);max-width:500px;font-weight:400;line-height:1.75;font-size:.95rem}
+/* ─── SHARED SECTION ──────────────────────────── */
+section{padding:100px var(--pad)}
+.section-inner{max-width:var(--max);margin:0 auto}
+
+.label{
+  font-size:.65rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--c1);margin-bottom:.7rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.label::before{content:'';display:inline-block;width:16px;height:1.5px;background:var(--c1)}
+
+h2.big{
+  font-family:'Clash Display',sans-serif;
+  font-size:clamp(2rem,3.8vw,3rem);
+  font-weight:700;letter-spacing:-1.2px;line-height:1.06;
+  margin-bottom:.9rem;
+}
+.sub{color:var(--muted2);max-width:480px;font-weight:400;line-height:1.75;font-size:.93rem}
 
 /* REVEAL */
-.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.25,.46,.45,.94),transform .7s cubic-bezier(.25,.46,.45,.94)}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .65s cubic-bezier(.25,.46,.45,.94),transform .65s cubic-bezier(.25,.46,.45,.94)}
 .reveal.in{opacity:1;transform:translateY(0)}
-.reveal-left{opacity:0;transform:translateX(-32px);transition:opacity .7s cubic-bezier(.25,.46,.45,.94),transform .7s cubic-bezier(.25,.46,.45,.94)}
+.reveal-left{opacity:0;transform:translateX(-28px);transition:opacity .65s cubic-bezier(.25,.46,.45,.94),transform .65s cubic-bezier(.25,.46,.45,.94)}
 .reveal-left.in{opacity:1;transform:translateX(0)}
-.reveal-right{opacity:0;transform:translateX(32px);transition:opacity .7s ease,transform .7s ease}
+.reveal-right{opacity:0;transform:translateX(28px);transition:opacity .65s ease,transform .65s ease}
 .reveal-right.in{opacity:1;transform:translateX(0)}
 
-/* SERVICES */
+/* ─── SERVICES ────────────────────────────────── */
 #servicios{background:var(--surface)}
-.services-bento{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:auto;gap:1.5px;background:var(--border);border-radius:var(--r2);overflow:hidden;margin-top:3.5rem}
-.bento-card{background:var(--card);padding:2.8rem;transition:background .3s;position:relative;overflow:hidden}
-.bento-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(5,232,203,.04),transparent);opacity:0;transition:opacity .4s}
+.services-bento{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:1px;
+  background:var(--border);
+  border-radius:var(--r2);
+  overflow:hidden;
+  margin-top:3rem;
+}
+.bento-card{
+  background:var(--card);padding:2.5rem;
+  transition:background .25s;
+  position:relative;overflow:hidden;
+}
 .bento-card:hover{background:var(--card2)}
-.bento-card:hover::after{opacity:1}
-.bc-1{grid-column:span 7}.bc-2{grid-column:span 5}.bc-3{grid-column:span 5}.bc-4{grid-column:span 7}
+.bc-1{grid-column:span 7}.bc-2{grid-column:span 5}
+.bc-3{grid-column:span 5}.bc-4{grid-column:span 7}
 @media(max-width:900px){.bc-1,.bc-2,.bc-3,.bc-4{grid-column:span 12}}
-.bento-num{font-family:'Clash Display',sans-serif;font-size:4rem;font-weight:700;line-height:1;background:linear-gradient(135deg,rgba(5,232,203,.15),rgba(10,108,255,.1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem}
-.bento-icon{width:54px;height:54px;border-radius:14px;display:grid;place-items:center;font-size:1.4rem;margin-bottom:1.5rem;border:1px solid var(--border2);position:relative;z-index:1}
-.bento-card:nth-child(1) .bento-icon{background:linear-gradient(135deg,rgba(5,232,203,.12),rgba(5,232,203,.04))}
-.bento-card:nth-child(2) .bento-icon{background:linear-gradient(135deg,rgba(10,108,255,.12),rgba(10,108,255,.04))}
-.bento-card:nth-child(3) .bento-icon{background:linear-gradient(135deg,rgba(124,58,237,.12),rgba(124,58,237,.04))}
-.bento-card:nth-child(4) .bento-icon{background:linear-gradient(135deg,rgba(255,77,109,.12),rgba(255,77,109,.04))}
-.bento-card h3{font-family:'Clash Display',sans-serif;font-size:1.3rem;font-weight:600;letter-spacing:-.5px;margin-bottom:.7rem}
-.bento-card p{color:var(--muted2);font-size:.875rem;line-height:1.75;font-weight:400;max-width:400px}
-.chip-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:1.4rem}
-.chip{font-size:.68rem;font-weight:600;padding:4px 11px;border-radius:100px;border:1px solid rgba(255,255,255,.08);color:var(--muted);letter-spacing:.3px;transition:border-color .2s,color .2s}
-.bento-card:hover .chip{border-color:rgba(5,232,203,.2);color:var(--muted2)}
-.bento-corner-line{position:absolute;bottom:0;right:0;width:120px;height:120px;border-top:1px solid var(--border);border-left:1px solid var(--border);border-radius:var(--r) 0 0 0;opacity:.5;pointer-events:none}
 
-/* SFTP SHOWCASE */
+.bento-icon{
+  width:48px;height:48px;border-radius:12px;
+  display:grid;place-items:center;font-size:1.3rem;
+  margin-bottom:1.3rem;border:1px solid var(--border2);
+}
+.bento-card:nth-child(1) .bento-icon{background:rgba(5,232,203,.1)}
+.bento-card:nth-child(2) .bento-icon{background:rgba(10,108,255,.1)}
+.bento-card:nth-child(3) .bento-icon{background:rgba(124,58,237,.1)}
+.bento-card:nth-child(4) .bento-icon{background:rgba(255,77,109,.1)}
+.bento-card h3{
+  font-family:'Clash Display',sans-serif;
+  font-size:1.2rem;font-weight:600;letter-spacing:-.4px;margin-bottom:.6rem;
+}
+.bento-card p{color:var(--muted2);font-size:.865rem;line-height:1.75;max-width:380px}
+.chip-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:1.2rem}
+.chip{
+  font-size:.67rem;font-weight:600;
+  padding:4px 10px;border-radius:6px;
+  border:1px solid rgba(255,255,255,.08);
+  color:var(--muted);letter-spacing:.2px;
+}
+.bento-card:hover .chip{border-color:rgba(5,232,203,.18);color:var(--muted2)}
+
+/* ─── SFTP ────────────────────────────────────── */
 #sftp{background:var(--bg2)}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center}
+.two-col{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:5rem;align-items:center;
+}
 @media(max-width:860px){.two-col{grid-template-columns:1fr;gap:3rem}}
 
-.terminal-wrap{position:relative}
-.terminal-glow{position:absolute;inset:-30px;background:radial-gradient(ellipse at 50% 50%,rgba(5,232,203,.08),transparent 70%);pointer-events:none;z-index:0;border-radius:40px}
-.terminal{position:relative;z-index:1;background:#070a12;border:1px solid var(--border2);border-radius:var(--r2);overflow:hidden;font-family:'SF Mono','Fira Code','JetBrains Mono',monospace;font-size:.8rem;box-shadow:0 40px 80px rgba(0,0,0,.6),0 0 0 1px rgba(5,232,203,.08)}
-.term-bar{background:#0c101e;padding:12px 18px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
-.td{width:12px;height:12px;border-radius:50%}
+.terminal{
+  background:#070a12;
+  border:1px solid var(--border2);
+  border-radius:var(--r2);overflow:hidden;
+  font-family:'SF Mono','Fira Code','JetBrains Mono',monospace;font-size:.78rem;
+  box-shadow:0 32px 64px rgba(0,0,0,.55),0 0 0 1px rgba(5,232,203,.06);
+}
+.term-bar{
+  background:#0c101e;padding:12px 16px;
+  display:flex;align-items:center;gap:7px;
+  border-bottom:1px solid var(--border);
+}
+.td{width:11px;height:11px;border-radius:50%}
 .td-r{background:#ff5f57}.td-y{background:#febc2e}.td-g{background:#28c840}
-.term-title{margin-left:auto;margin-right:auto;color:var(--muted);font-size:.72rem;letter-spacing:.5px}
-.term-body{padding:1.6rem 1.8rem;line-height:2.1}
+.term-title{margin:0 auto;color:var(--muted);font-size:.7rem;letter-spacing:.4px}
+.term-body{padding:1.5rem 1.6rem;line-height:2}
 .tc{color:var(--muted)}.tg{color:var(--c1)}.tb{color:#5da9ff}.tw{color:#c9d1e0}.ty{color:#f0c060}.tr{color:#ff6b6b}
-.blink{display:inline-block;width:8px;height:15px;background:var(--c1);vertical-align:middle;animation:blink 1s step-end infinite;border-radius:2px}
+.blink{display:inline-block;width:7px;height:14px;background:var(--c1);vertical-align:middle;animation:blink 1s step-end infinite;border-radius:1px}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
-.sftp-checklist{display:flex;flex-direction:column;gap:.85rem;margin-top:2.5rem}
-.check-item{display:flex;align-items:flex-start;gap:.85rem;padding:1rem 1.2rem;background:var(--card);border:1px solid var(--border);border-radius:12px;transition:border-color .25s,transform .25s}
-.check-item:hover{border-color:rgba(5,232,203,.2);transform:translateX(4px)}
-.check-dot{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,var(--c1),var(--c2));display:grid;place-items:center;flex-shrink:0;margin-top:1px;font-size:.7rem;color:#060810;font-weight:800}
-.check-item h4{font-size:.85rem;font-weight:700;margin-bottom:2px}
-.check-item p{font-size:.78rem;color:var(--muted);line-height:1.55}
+.sftp-checklist{display:flex;flex-direction:column;gap:.75rem;margin-top:2.2rem}
+.check-item{
+  display:flex;align-items:flex-start;gap:.8rem;
+  padding:.9rem 1.1rem;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;transition:border-color .22s;
+}
+.check-item:hover{border-color:rgba(5,232,203,.2)}
+.check-dot{
+  width:20px;height:20px;border-radius:5px;
+  background:linear-gradient(135deg,var(--c1),var(--c2));
+  display:grid;place-items:center;flex-shrink:0;
+  margin-top:2px;font-size:.65rem;color:#060810;font-weight:800;
+}
+.check-item h4{font-size:.83rem;font-weight:700;margin-bottom:2px}
+.check-item p{font-size:.77rem;color:var(--muted);line-height:1.55}
 
-/* RAID */
+/* ─── RAID ────────────────────────────────────── */
 #raid{background:var(--surface);position:relative;overflow:hidden}
-#raid::before{content:'RAID';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Clash Display',sans-serif;font-size:22rem;font-weight:700;color:rgba(5,232,203,.018);line-height:1;pointer-events:none;letter-spacing:-20px;white-space:nowrap}
-.raid-header{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:end;margin-bottom:4rem}
-@media(max-width:700px){.raid-header{grid-template-columns:1fr}}
+#raid::before{
+  content:'RAID';
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Clash Display',sans-serif;font-size:20rem;font-weight:700;
+  color:rgba(5,232,203,.015);line-height:1;pointer-events:none;
+  letter-spacing:-18px;white-space:nowrap;
+}
+.raid-header{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:4rem;align-items:end;margin-bottom:3.5rem;
+}
+@media(max-width:700px){.raid-header{grid-template-columns:1fr;gap:1.5rem}}
 .raid-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
-.raid-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:2rem;position:relative;overflow:hidden;cursor:none;transition:transform .3s cubic-bezier(.25,.46,.45,.94),border-color .3s,box-shadow .3s}
-.raid-card:hover{transform:translateY(-6px);border-color:rgba(5,232,203,.2);box-shadow:0 20px 50px rgba(0,0,0,.4),0 0 0 1px rgba(5,232,203,.1)}
-.raid-badge{position:absolute;top:1.2rem;right:1.2rem;font-size:.62rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:100px}
-.badge-our{background:rgba(5,232,203,.12);color:var(--c1);border:1px solid rgba(5,232,203,.25)}
-.badge-opt{background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--border)}
-.raid-level{font-family:'Clash Display',sans-serif;font-size:3rem;font-weight:700;color:var(--c1);line-height:1;margin-bottom:.3rem}
-.raid-name{font-size:.8rem;font-weight:600;color:var(--muted);margin-bottom:.8rem;letter-spacing:.3px}
-.raid-desc{font-size:.82rem;color:var(--muted2);line-height:1.65;font-weight:400}
-.bar-group{margin-top:1.4rem;display:flex;flex-direction:column;gap:.6rem}
-.bar-row{display:flex;align-items:center;gap:.75rem}
-.bar-lbl{font-size:.68rem;font-weight:600;color:var(--muted);width:76px;flex-shrink:0;letter-spacing:.3px;text-transform:uppercase}
+.raid-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r2);padding:1.8rem;
+  position:relative;overflow:hidden;
+  transition:transform .28s cubic-bezier(.25,.46,.45,.94),border-color .28s,box-shadow .28s;
+}
+.raid-card:hover{
+  transform:translateY(-5px);
+  border-color:rgba(5,232,203,.18);
+  box-shadow:0 18px 42px rgba(0,0,0,.38);
+}
+.raid-badge{
+  position:absolute;top:1rem;right:1rem;
+  font-size:.6rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  padding:3px 8px;border-radius:5px;
+}
+.badge-our{background:rgba(5,232,203,.1);color:var(--c1);border:1px solid rgba(5,232,203,.22)}
+.badge-opt{background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--border)}
+.raid-level{font-family:'Clash Display',sans-serif;font-size:2.8rem;font-weight:700;color:var(--c1);line-height:1;margin-bottom:.3rem}
+.raid-name{font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:.7rem;letter-spacing:.2px}
+.raid-desc{font-size:.8rem;color:var(--muted2);line-height:1.65}
+.bar-group{margin-top:1.3rem;display:flex;flex-direction:column;gap:.55rem}
+.bar-row{display:flex;align-items:center;gap:.7rem}
+.bar-lbl{font-size:.66rem;font-weight:600;color:var(--muted);width:76px;flex-shrink:0;letter-spacing:.2px;text-transform:uppercase}
 .bar-track{flex:1;height:4px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden}
-.bar-fill{height:100%;border-radius:2px;transition:width 1.2s cubic-bezier(.25,.46,.45,.94) .3s}
-.bar-pct{font-size:.68rem;font-weight:600;color:var(--muted);width:28px;text-align:right;flex-shrink:0}
+.bar-fill{height:100%;border-radius:2px;transition:width 1.1s cubic-bezier(.25,.46,.45,.94) .3s}
+.bar-pct{font-size:.66rem;font-weight:600;color:var(--muted);width:28px;text-align:right;flex-shrink:0}
 
-/* ENCRYPTION */
+/* ─── ENCRYPTION ──────────────────────────────── */
 #enc{background:var(--bg2)}
-.enc-split{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center}
+.enc-split{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
 @media(max-width:860px){.enc-split{grid-template-columns:1fr}}
 .enc-visual{display:flex;flex-direction:column;align-items:center;gap:2rem}
-.enc-ring-wrap{position:relative;width:240px;height:240px;flex-shrink:0}
+.enc-ring-wrap{position:relative;width:220px;height:220px;flex-shrink:0}
 .enc-ring{position:absolute;inset:0;border-radius:50%;animation:spin 20s linear infinite}
-.ring-1{border:1px dashed rgba(5,232,203,.25);animation-direction:normal}
-.ring-2{inset:20px;border:1px dashed rgba(10,108,255,.2);animation-direction:reverse;animation-duration:15s}
-.ring-3{inset:40px;border:1px dashed rgba(124,58,237,.15);animation-duration:10s}
+.ring-1{border:1px dashed rgba(5,232,203,.22);animation-direction:normal}
+.ring-2{inset:20px;border:1px dashed rgba(10,108,255,.18);animation-direction:reverse;animation-duration:14s}
+.ring-3{inset:40px;border:1px dashed rgba(124,58,237,.14);animation-duration:9s}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-.enc-core{position:absolute;inset:55px;background:linear-gradient(135deg,rgba(5,232,203,.1),rgba(10,108,255,.1));border-radius:50%;border:1px solid rgba(5,232,203,.2);display:grid;place-items:center;font-size:2.2rem;animation:floatCore 4s ease-in-out infinite}
-@keyframes floatCore{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
-.vera-pill{background:rgba(5,232,203,.07);border:1px solid rgba(5,232,203,.2);border-radius:14px;padding:1.2rem 2.4rem;text-align:center}
-.vera-pill strong{font-family:'Clash Display',sans-serif;font-size:1.1rem;font-weight:600;color:var(--c1);display:block;margin-bottom:3px}
-.vera-pill span{font-size:.75rem;color:var(--muted)}
-.enc-features{display:flex;flex-direction:column;gap:.85rem;margin-top:2rem}
-.enc-feat{display:flex;gap:1rem;align-items:flex-start;padding:1.1rem 1.3rem;background:var(--card);border:1px solid var(--border);border-radius:12px;transition:all .25s;cursor:none}
-.enc-feat:hover{border-color:rgba(5,232,203,.2);background:var(--card2);transform:translateX(4px)}
-.feat-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,rgba(5,232,203,.12),rgba(5,232,203,.04));display:grid;place-items:center;flex-shrink:0;font-size:.95rem;border:1px solid rgba(5,232,203,.15)}
-.enc-feat h4{font-size:.85rem;font-weight:700;margin-bottom:3px;color:var(--text)}
-.enc-feat p{font-size:.78rem;color:var(--muted);line-height:1.55}
+.enc-core{
+  position:absolute;inset:55px;
+  background:linear-gradient(135deg,rgba(5,232,203,.08),rgba(10,108,255,.08));
+  border-radius:50%;border:1px solid rgba(5,232,203,.18);
+  display:grid;place-items:center;font-size:2rem;
+  animation:floatCore 4s ease-in-out infinite;
+}
+@keyframes floatCore{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.vera-pill{
+  background:rgba(5,232,203,.06);border:1px solid rgba(5,232,203,.18);
+  border-radius:12px;padding:1.1rem 2rem;text-align:center;
+}
+.vera-pill strong{font-family:'Clash Display',sans-serif;font-size:1rem;font-weight:600;color:var(--c1);display:block;margin-bottom:3px}
+.vera-pill span{font-size:.73rem;color:var(--muted)}
+.enc-features{display:flex;flex-direction:column;gap:.75rem;margin-top:1.8rem}
+.enc-feat{
+  display:flex;gap:.9rem;align-items:flex-start;
+  padding:1rem 1.2rem;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;transition:border-color .22s;
+}
+.enc-feat:hover{border-color:rgba(5,232,203,.2)}
+.feat-icon{
+  width:36px;height:36px;border-radius:9px;
+  background:rgba(5,232,203,.08);
+  display:grid;place-items:center;flex-shrink:0;
+  font-size:.9rem;border:1px solid rgba(5,232,203,.14);
+}
+.enc-feat h4{font-size:.83rem;font-weight:700;margin-bottom:2px}
+.enc-feat p{font-size:.77rem;color:var(--muted);line-height:1.55}
 
-/* TEAM */
+/* ─── TEAM ────────────────────────────────────── */
 #equipo{background:var(--surface)}
-.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem}
+.team-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1.2rem;margin-top:3rem;
+}
 @media(max-width:700px){.team-grid{grid-template-columns:1fr}}
-.team-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:2.4rem;text-align:center;transition:all .3s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden;cursor:none}
-.team-card::before{content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(5,232,203,.05),transparent 60%);opacity:0;transition:opacity .4s}
-.team-card:hover{transform:translateY(-6px);border-color:rgba(5,232,203,.2);box-shadow:0 24px 60px rgba(0,0,0,.5)}
-.team-card:hover::before{opacity:1}
-.team-avatar{width:80px;height:80px;border-radius:50%;margin:0 auto 1.2rem;background:linear-gradient(135deg,var(--c1),var(--c2));display:grid;place-items:center;font-family:'Clash Display',sans-serif;font-size:1.6rem;font-weight:700;color:#060810;position:relative}
-.team-avatar::after{content:'';position:absolute;inset:-3px;border-radius:50%;background:linear-gradient(135deg,var(--c1),var(--c2));z-index:-1;opacity:.3;filter:blur(8px)}
-.team-card h3{font-family:'Clash Display',sans-serif;font-size:1.15rem;font-weight:600;letter-spacing:-.3px;margin-bottom:.3rem}
-.team-role{font-size:.75rem;color:var(--c1);font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:1rem}
-.team-card p{font-size:.83rem;color:var(--muted);line-height:1.65}
-.team-tags{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-top:1rem}
+@media(max-width:900px) and (min-width:701px){.team-grid{grid-template-columns:1fr 1fr}}
+.team-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r2);padding:2.2rem;text-align:center;
+  transition:all .28s cubic-bezier(.25,.46,.45,.94);
+  position:relative;overflow:hidden;
+}
+.team-card:hover{transform:translateY(-5px);border-color:rgba(5,232,203,.18);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.team-avatar{
+  width:74px;height:74px;border-radius:50%;
+  margin:0 auto 1.1rem;
+  background:linear-gradient(135deg,var(--c1),var(--c2));
+  display:grid;place-items:center;
+  font-family:'Clash Display',sans-serif;font-size:1.5rem;font-weight:700;color:#060810;
+}
+.team-card h3{font-family:'Clash Display',sans-serif;font-size:1.1rem;font-weight:600;letter-spacing:-.2px;margin-bottom:.25rem}
+.team-role{font-size:.72rem;color:var(--c1);font-weight:600;letter-spacing:.4px;text-transform:uppercase;margin-bottom:.9rem}
+.team-card p{font-size:.82rem;color:var(--muted);line-height:1.65}
+.team-tags{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-top:.9rem}
 
-/* PROCESS */
-#proceso{background:var(--bg2);position:relative}
-.steps-track{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;margin-top:3.5rem}
-.steps-track::before{content:'';position:absolute;top:28px;left:calc(12.5%);right:calc(12.5%);height:1px;background:linear-gradient(90deg,transparent,var(--border2),var(--border2),transparent);z-index:0}
-@media(max-width:700px){.steps-track{grid-template-columns:1fr 1fr}}
-.step-item{padding:0 1.5rem 2rem;text-align:center;position:relative}
-.step-num{width:56px;height:56px;border-radius:50%;border:1px solid var(--border2);display:grid;place-items:center;margin:0 auto 1.5rem;font-family:'Clash Display',sans-serif;font-weight:700;font-size:1rem;color:var(--c1);background:var(--surface);position:relative;z-index:1;transition:all .3s}
-.step-item:hover .step-num{background:var(--c1);color:#060810;border-color:var(--c1);box-shadow:0 0 0 6px rgba(5,232,203,.15)}
-.step-item h4{font-family:'Clash Display',sans-serif;font-size:.95rem;font-weight:600;margin-bottom:.5rem;letter-spacing:-.2px}
-.step-item p{font-size:.8rem;color:var(--muted);line-height:1.65}
+/* ─── PROCESS ─────────────────────────────────── */
+#proceso{background:var(--bg2)}
+.steps-track{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  position:relative;margin-top:3.5rem;
+}
+.steps-track::before{
+  content:'';position:absolute;
+  top:27px;left:calc(12.5%);right:calc(12.5%);
+  height:1px;background:linear-gradient(90deg,transparent,var(--border2),var(--border2),transparent);
+}
+@media(max-width:700px){.steps-track{grid-template-columns:1fr 1fr;gap:1rem}}
+@media(max-width:400px){.steps-track{grid-template-columns:1fr}}
+.step-item{padding:0 1.2rem 2rem;text-align:center;position:relative}
+.step-num{
+  width:54px;height:54px;border-radius:50%;
+  border:1px solid var(--border2);
+  display:grid;place-items:center;
+  margin:0 auto 1.4rem;
+  font-family:'Clash Display',sans-serif;font-weight:700;font-size:.95rem;color:var(--c1);
+  background:var(--bg2);position:relative;z-index:1;
+  transition:all .25s;
+}
+.step-item:hover .step-num{background:var(--c1);color:#060810;border-color:var(--c1);box-shadow:0 0 0 5px rgba(5,232,203,.14)}
+.step-item h4{font-family:'Clash Display',sans-serif;font-size:.92rem;font-weight:600;margin-bottom:.45rem;letter-spacing:-.15px}
+.step-item p{font-size:.78rem;color:var(--muted);line-height:1.65}
 
-/* PRICING */
+/* ─── PRICING ─────────────────────────────────── */
 #precios{background:var(--surface)}
-.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:1100px;margin:3.5rem auto 0}
-@media(max-width:860px){.pricing-grid{grid-template-columns:1fr}}
-.plan-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:2.5rem;position:relative;transition:all .3s cubic-bezier(.25,.46,.45,.94);overflow:hidden}
-.plan-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.4)}
-.plan-card.highlight{border-color:rgba(5,232,203,.35);background:linear-gradient(160deg,rgba(5,232,203,.06),rgba(10,108,255,.04),var(--card))}
-.highlight-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,var(--c1),var(--c2));color:#060810;font-size:.65rem;font-weight:800;padding:4px 16px;border-radius:0 0 10px 10px;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap}
-.plan-tier{font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:1.2rem}
-.plan-price-block{margin-bottom:1.4rem}
-.plan-amount{font-family:'Clash Display',sans-serif;font-size:3rem;font-weight:700;line-height:1;letter-spacing:-2px}
-.plan-amount sup{font-size:1.2rem;vertical-align:super;font-size:1.3rem}
-.plan-period{font-size:.9rem;color:var(--muted);font-weight:400}
-.plan-headline{font-size:.82rem;color:var(--muted2);margin-bottom:2rem;line-height:1.6}
-.plan-feats{list-style:none;display:flex;flex-direction:column;gap:.65rem;margin-bottom:2.2rem}
-.plan-feats li{font-size:.83rem;color:var(--muted2);display:flex;align-items:flex-start;gap:.6rem;font-weight:400;line-height:1.5}
+.pricing-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1.2rem;max-width:var(--max);margin:3rem auto 0;
+}
+@media(max-width:860px){.pricing-grid{grid-template-columns:1fr;max-width:480px}}
+.plan-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r2);padding:2.2rem;
+  position:relative;
+  transition:all .28s cubic-bezier(.25,.46,.45,.94);overflow:hidden;
+}
+.plan-card:hover{transform:translateY(-3px);box-shadow:0 18px 42px rgba(0,0,0,.38)}
+.plan-card.highlight{
+  border-color:rgba(5,232,203,.32);
+  background:linear-gradient(160deg,rgba(5,232,203,.055),rgba(10,108,255,.035),var(--card));
+}
+.highlight-badge{
+  position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(90deg,var(--c1),var(--c2));
+  color:#060810;font-size:.63rem;font-weight:800;
+  padding:4px 15px;border-radius:0 0 9px 9px;
+  letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;
+}
+.plan-tier{font-size:.66rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:1.1rem}
+.plan-price-block{margin-bottom:1.2rem}
+.plan-amount{font-family:'Clash Display',sans-serif;font-size:2.8rem;font-weight:700;line-height:1;letter-spacing:-1.5px}
+.plan-amount sup{font-size:1.2rem;vertical-align:super}
+.plan-period{font-size:.88rem;color:var(--muted);font-weight:400}
+.plan-headline{font-size:.81rem;color:var(--muted2);margin-bottom:1.8rem;line-height:1.6}
+.plan-feats{list-style:none;display:flex;flex-direction:column;gap:.6rem;margin-bottom:2rem}
+.plan-feats li{font-size:.82rem;color:var(--muted2);display:flex;align-items:flex-start;gap:.55rem;line-height:1.5}
 .plan-feats li::before{content:'✓';color:var(--c1);font-weight:800;flex-shrink:0;margin-top:1px}
-.plan-feats li.no{opacity:.35}
+.plan-feats li.no{opacity:.32}
 .plan-feats li.no::before{content:'–';color:var(--muted)}
-.plan-btn{width:100%;padding:13px;border-radius:10px;font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:.85rem;cursor:none;text-align:center;display:block;text-decoration:none;transition:all .25s;letter-spacing:.2px}
+.plan-btn{
+  width:100%;padding:12px;border-radius:8px;
+  font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:.84rem;
+  cursor:pointer;text-align:center;display:block;text-decoration:none;
+  transition:all .22s;letter-spacing:.15px;
+}
 .plan-btn-outline{background:transparent;border:1.5px solid var(--border2);color:var(--text)}
-.plan-btn-outline:hover{border-color:rgba(5,232,203,.4);color:var(--c1);background:rgba(5,232,203,.04)}
+.plan-btn-outline:hover{border-color:rgba(5,232,203,.38);color:var(--c1)}
 .plan-btn-fill{background:linear-gradient(135deg,var(--c1),var(--c2));border:none;color:#060810}
-.plan-btn-fill:hover{box-shadow:0 8px 24px rgba(5,232,203,.3);transform:translateY(-1px)}
+.plan-btn-fill:hover{box-shadow:0 8px 22px rgba(5,232,203,.28);transform:translateY(-1px)}
 
-/* CONTACT */
+/* ─── CONTACT ─────────────────────────────────── */
 #contacto{background:var(--bg2)}
-.contact-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:6rem;align-items:start}
-@media(max-width:860px){.contact-grid{grid-template-columns:1fr}}
-.contact-meta{display:flex;flex-direction:column;gap:1.2rem;margin-top:2.5rem}
-.meta-item{display:flex;gap:.9rem;align-items:flex-start;padding:.9rem 1.1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;transition:border-color .25s}
-.meta-item:hover{border-color:rgba(5,232,203,.2)}
-.meta-ico{width:40px;height:40px;border-radius:10px;background:rgba(5,232,203,.08);border:1px solid rgba(5,232,203,.12);display:grid;place-items:center;flex-shrink:0;font-size:1rem}
-.meta-item h4{font-size:.8rem;font-weight:700;margin-bottom:2px;color:var(--text)}
-.meta-item p{font-size:.8rem;color:var(--muted);font-weight:400}
-.form-grid{display:flex;flex-direction:column;gap:.9rem}
-.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+.contact-grid{
+  display:grid;grid-template-columns:1fr 1.4fr;
+  gap:5rem;align-items:start;
+}
+@media(max-width:860px){.contact-grid{grid-template-columns:1fr;gap:2.5rem}}
+.contact-meta{display:flex;flex-direction:column;gap:1rem;margin-top:2.2rem}
+.meta-item{
+  display:flex;gap:.85rem;align-items:flex-start;
+  padding:.85rem 1rem;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;transition:border-color .22s;
+}
+.meta-item:hover{border-color:rgba(5,232,203,.18)}
+.meta-ico{
+  width:38px;height:38px;border-radius:9px;
+  background:rgba(5,232,203,.07);border:1px solid rgba(5,232,203,.12);
+  display:grid;place-items:center;flex-shrink:0;font-size:.95rem;
+}
+.meta-item h4{font-size:.78rem;font-weight:700;margin-bottom:2px}
+.meta-item p{font-size:.78rem;color:var(--muted)}
+.form-grid{display:flex;flex-direction:column;gap:.85rem}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
 @media(max-width:550px){.form-row-2{grid-template-columns:1fr}}
-.form-field{display:flex;flex-direction:column;gap:.4rem}
-.form-field label{font-size:.72rem;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
-.form-field input,.form-field select,.form-field textarea{background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:13px 16px;color:var(--text);font-family:'Cabinet Grotesk',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s,box-shadow .2s;cursor:none;font-weight:400}
-.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(5,232,203,.08)}
+.form-field{display:flex;flex-direction:column;gap:.35rem}
+.form-field label{font-size:.68rem;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
+.form-field input,
+.form-field select,
+.form-field textarea{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:9px;padding:12px 14px;
+  color:var(--text);font-family:'Cabinet Grotesk',sans-serif;
+  font-size:.87rem;outline:none;
+  transition:border-color .2s,box-shadow .2s;font-weight:400;
+  appearance:none;
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus{
+  border-color:var(--c1);box-shadow:0 0 0 3px rgba(5,232,203,.07);
+}
 .form-field select option{background:var(--surface)}
-.form-field textarea{resize:vertical;min-height:120px;line-height:1.6}
-.send-btn{padding:14px 36px;border-radius:12px;font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:.9rem;cursor:none;border:none;background:linear-gradient(135deg,var(--c1),var(--c2));color:#060810;transition:all .25s;align-self:flex-start;letter-spacing:.2px;position:relative;overflow:hidden}
-.send-btn::before{content:'';position:absolute;inset:-2px;background:linear-gradient(135deg,var(--c1),var(--c2));border-radius:14px;filter:blur(12px);opacity:0;transition:opacity .3s;z-index:-1}
-.send-btn:hover::before{opacity:.5}
-.send-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(5,232,203,.25)}
+.form-field textarea{resize:vertical;min-height:110px;line-height:1.6}
+.send-btn{
+  padding:13px 32px;border-radius:9px;
+  font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:.88rem;
+  cursor:pointer;border:none;
+  background:linear-gradient(135deg,var(--c1),var(--c2));
+  color:#060810;transition:all .22s;
+  align-self:flex-start;letter-spacing:.15px;
+}
+.send-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(5,232,203,.22)}
+.send-btn:disabled{opacity:.55;transform:none;cursor:default}
 
-/* FOOTER */
-footer{border-top:1px solid var(--border);padding:2.5rem 4vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;background:var(--bg)}
-.footer-copy{font-size:.78rem;color:var(--muted);display:flex;flex-direction:column;gap:.3rem}
+/* ─── FOOTER ──────────────────────────────────── */
+footer{
+  border-top:1px solid var(--border);
+  padding:2.2rem var(--pad);
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:1rem;background:var(--bg);
+}
+.footer-copy{font-size:.76rem;color:var(--muted);display:flex;flex-direction:column;gap:.3rem}
 .footer-copy strong{color:var(--c1);font-weight:700}
-.footer-links{display:flex;gap:1.5rem}
-.footer-links a{font-size:.78rem;color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-links{display:flex;gap:1.4rem}
+.footer-links a{font-size:.76rem;color:var(--muted);text-decoration:none;transition:color .2s}
 .footer-links a:hover{color:var(--text)}
-
-@media(max-width:700px){footer{flex-direction:column;text-align:center}}
+@media(max-width:700px){
+  footer{flex-direction:column;text-align:center}
+  .footer-links{justify-content:center}
+}
 </style>
 </head>
 <body>
-
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
 
 <!-- NAV -->
 <nav id="nav">
@@ -314,7 +683,20 @@ footer{border-top:1px solid var(--border);padding:2.5rem 4vw;display:flex;justif
     <li><a href="#precios">Precios</a></li>
   </ul>
   <button class="nav-pill" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">Contacto →</button>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#servicios">Servicios</a>
+  <a href="#sftp">SFTP</a>
+  <a href="#raid">RAID</a>
+  <a href="#enc">Seguridad</a>
+  <a href="#equipo">Equipo</a>
+  <a href="#precios">Precios</a>
+  <a href="#contacto">Contacto →</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -330,7 +712,7 @@ footer{border-top:1px solid var(--border);padding:2.5rem 4vw;display:flex;justif
 
   <h1 class="hero-title">
     Tu infraestructura TIC<br/>
-    <em data-text="segura y sin complicaciones">segura y sin complicaciones</em>
+    <em>segura y sin complicaciones</em>
   </h1>
 
   <p class="hero-sub">
@@ -339,8 +721,8 @@ footer{border-top:1px solid var(--border);padding:2.5rem 4vw;display:flex;justif
   </p>
 
   <div class="hero-ctas">
-    <a href="#servicios" class="btn-glow btn-glow-primary">Ver servicios <span class="btn-arrow">→</span></a>
-    <a href="#contacto" class="btn-glow btn-glow-ghost">Hablar con nosotros</a>
+    <a href="#servicios" class="btn-primary">Ver servicios →</a>
+    <a href="#contacto" class="btn-ghost">Hablar con nosotros</a>
   </div>
 
   <div class="hero-metrics">
@@ -380,108 +762,109 @@ footer{border-top:1px solid var(--border);padding:2.5rem 4vw;display:flex;justif
 
 <!-- SERVICES -->
 <section id="servicios">
-  <div class="label reveal">Lo que ofrecemos</div>
-  <h2 class="big reveal" style="max-width:680px">Cuatro servicios, una sola infraestructura</h2>
+  <div class="section-inner">
+    <div class="label reveal">Lo que ofrecemos</div>
+    <h2 class="big reveal" style="max-width:640px">Cuatro servicios, una sola infraestructura</h2>
 
-  <div class="services-bento reveal">
-    <div class="bento-card bc-1">
-      <div class="bento-icon">🌐</div>
-      <h3>Hosting Web Profesional</h3>
-      <p>Creamos y mantenemos tu web corporativa sobre IIS en Windows Server. Certificados SSL/TLS, dominio DNS interno y backups diarios incluidos. Tu web siempre activa.</p>
-      <div class="chip-row">
-        <span class="chip">IIS · Windows Server</span>
-        <span class="chip">SSL/TLS automático</span>
-        <span class="chip">DNS propio</span>
-        <span class="chip">Backup diario</span>
-        <span class="chip">Virtual Hosts</span>
+    <div class="services-bento reveal">
+      <div class="bento-card bc-1">
+        <div class="bento-icon">🌐</div>
+        <h3>Hosting Web Profesional</h3>
+        <p>Creamos y mantenemos tu web corporativa sobre IIS en Windows Server. Certificados SSL/TLS, dominio DNS interno y backups diarios incluidos. Tu web siempre activa.</p>
+        <div class="chip-row">
+          <span class="chip">IIS · Windows Server</span>
+          <span class="chip">SSL/TLS automático</span>
+          <span class="chip">DNS propio</span>
+          <span class="chip">Backup diario</span>
+          <span class="chip">Virtual Hosts</span>
+        </div>
       </div>
-      <div class="bento-corner-line"></div>
-    </div>
-    <div class="bento-card bc-2">
-      <div class="bento-icon">📂</div>
-      <h3>SFTP con OpenSSH</h3>
-      <p>Acceso seguro a tu carpeta de archivos vía OpenSSH, puerto 22. Cada PYME sólo ve los suyos gracias a permisos NTFS individuales.</p>
-      <div class="chip-row">
-        <span class="chip">OpenSSH nativo</span>
-        <span class="chip">Puerto 22</span>
-        <span class="chip">Permisos NTFS</span>
-        <span class="chip">Sin FTP inseguro</span>
+      <div class="bento-card bc-2">
+        <div class="bento-icon">📂</div>
+        <h3>SFTP con OpenSSH</h3>
+        <p>Acceso seguro a tu carpeta de archivos vía OpenSSH, puerto 22. Cada PYME sólo ve los suyos gracias a permisos NTFS individuales.</p>
+        <div class="chip-row">
+          <span class="chip">OpenSSH nativo</span>
+          <span class="chip">Puerto 22</span>
+          <span class="chip">Permisos NTFS</span>
+          <span class="chip">Sin FTP inseguro</span>
+        </div>
       </div>
-    </div>
-    <div class="bento-card bc-3">
-      <div class="bento-icon">💾</div>
-      <h3>RAID 1 por Software</h3>
-      <p>Dos discos en espejo con Disk Management de Windows Server. Si uno falla, el otro continúa. Prueba de degradación incluida antes de la entrega.</p>
-      <div class="chip-row">
-        <span class="chip">RAID 1 espejo</span>
-        <span class="chip">Disk Management</span>
-        <span class="chip">Disco dinámico NTFS</span>
-        <span class="chip">Test degradación</span>
+      <div class="bento-card bc-3">
+        <div class="bento-icon">💾</div>
+        <h3>RAID 1 por Software</h3>
+        <p>Dos discos en espejo con Disk Management de Windows Server. Si uno falla, el otro continúa. Prueba de degradación incluida antes de la entrega.</p>
+        <div class="chip-row">
+          <span class="chip">RAID 1 espejo</span>
+          <span class="chip">Disk Management</span>
+          <span class="chip">Disco dinámico NTFS</span>
+          <span class="chip">Test degradación</span>
+        </div>
       </div>
-    </div>
-    <div class="bento-card bc-4">
-      <div class="bento-icon">🔒</div>
-      <h3>Encriptación VeraCrypt</h3>
-      <p>Volúmenes cifrados con AES-256 sobre los datos de tus clientes. Open source, auditado por OSTIF, sin puertas traseras. La protección más robusta del mercado libre aplicada a tu servidor.</p>
-      <div class="chip-row">
-        <span class="chip">AES-256</span>
-        <span class="chip">VeraCrypt</span>
-        <span class="chip">Open Source auditado</span>
-        <span class="chip">Volúmenes ocultos</span>
-        <span class="chip">Cifrado en caliente</span>
+      <div class="bento-card bc-4">
+        <div class="bento-icon">🔒</div>
+        <h3>Encriptación VeraCrypt</h3>
+        <p>Volúmenes cifrados con AES-256 sobre los datos de tus clientes. Open source, auditado por OSTIF, sin puertas traseras. La protección más robusta del mercado libre aplicada a tu servidor.</p>
+        <div class="chip-row">
+          <span class="chip">AES-256</span>
+          <span class="chip">VeraCrypt</span>
+          <span class="chip">Open Source auditado</span>
+          <span class="chip">Volúmenes ocultos</span>
+          <span class="chip">Cifrado en caliente</span>
+        </div>
       </div>
-      <div class="bento-corner-line"></div>
     </div>
   </div>
 </section>
 
 <!-- SFTP DETAIL -->
 <section id="sftp">
-  <div class="two-col">
-    <div class="reveal-left">
-      <div class="label">SFTP & Hosting</div>
-      <h2 class="big">Tu carpeta.<br/>Sólo la tuya.</h2>
-      <p class="sub">Cada PYME cliente accede exclusivamente a su espacio en el servidor mediante OpenSSH. Los permisos NTFS garantizan que nadie pueda tocar los archivos de otra empresa.</p>
-      <div class="sftp-checklist">
-        <div class="check-item">
-          <div class="check-dot">✓</div>
-          <div><h4>OpenSSH nativo en Windows Server</h4><p>Sin software de terceros. Puerto 22, instalado desde el Administrador del Servidor.</p></div>
-        </div>
-        <div class="check-item">
-          <div class="check-dot">✓</div>
-          <div><h4>Permisos NTFS por empresa</h4><p>Lectura/Escritura para el propietario. Acceso denegado al resto. Demostramos el bloqueo en vivo.</p></div>
-        </div>
-        <div class="check-item">
-          <div class="check-dot">✓</div>
-          <div><h4>Firewall ASA en Cisco Packet Tracer</h4><p>Reglas de entrada por red. Puertos 22, 80 y 443 abiertos sólo donde corresponde.</p></div>
-        </div>
-        <div class="check-item">
-          <div class="check-dot">✓</div>
-          <div><h4>Por qué SFTP en lugar de VPN</h4><p>La VPN da acceso a toda la red interna. SFTP limita al cliente a su carpeta. Más seguro, más sencillo de administrar.</p></div>
+  <div class="section-inner">
+    <div class="two-col">
+      <div class="reveal-left">
+        <div class="label">SFTP & Hosting</div>
+        <h2 class="big">Tu carpeta.<br/>Sólo la tuya.</h2>
+        <p class="sub">Cada PYME cliente accede exclusivamente a su espacio en el servidor mediante OpenSSH. Los permisos NTFS garantizan que nadie pueda tocar los archivos de otra empresa.</p>
+        <div class="sftp-checklist">
+          <div class="check-item">
+            <div class="check-dot">✓</div>
+            <div><h4>OpenSSH nativo en Windows Server</h4><p>Sin software de terceros. Puerto 22, instalado desde el Administrador del Servidor.</p></div>
+          </div>
+          <div class="check-item">
+            <div class="check-dot">✓</div>
+            <div><h4>Permisos NTFS por empresa</h4><p>Lectura/Escritura para el propietario. Acceso denegado al resto. Demostramos el bloqueo en vivo.</p></div>
+          </div>
+          <div class="check-item">
+            <div class="check-dot">✓</div>
+            <div><h4>Firewall ASA en Cisco Packet Tracer</h4><p>Reglas de entrada por red. Puertos 22, 80 y 443 abiertos sólo donde corresponde.</p></div>
+          </div>
+          <div class="check-item">
+            <div class="check-dot">✓</div>
+            <div><h4>Por qué SFTP en lugar de VPN</h4><p>La VPN da acceso a toda la red interna. SFTP limita al cliente a su carpeta. Más seguro, más sencillo de administrar.</p></div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="terminal-wrap reveal-right">
-      <div class="terminal-glow"></div>
-      <div class="terminal">
-        <div class="term-bar">
-          <div class="td td-r"></div>
-          <div class="td td-y"></div>
-          <div class="td td-g"></div>
-          <span class="term-title">OpenSSH — systemlinkhub.es</span>
-        </div>
-        <div class="term-body">
-          <div><span class="tc">C:\&gt;</span> <span class="tg">ssh</span> <span class="tb">-p 22</span> <span class="tw">cliente1@systemlinkhub.es</span></div>
-          <div><span class="ty">Connected to systemlinkhub.es (OpenSSH 9.x)</span></div>
-          <div><span class="tc">sftp&gt;</span> <span class="tg">ls</span></div>
-          <div><span class="tc">drwxr-x---</span> <span class="tw">web_cliente1\</span> <span class="tc">← sólo tu carpeta</span></div>
-          <div><span class="tc">sftp&gt;</span> <span class="tg">put</span> <span class="tw">index.html</span> <span class="tb">web_cliente1/</span></div>
-          <div><span class="ty">Uploading index.html → web_cliente1/</span></div>
-          <div><span class="tg">index.html</span> <span class="tc">100%  12 KB  NTFS OK ✓</span></div>
-          <div>&nbsp;</div>
-          <div><span class="tc">sftp&gt;</span> <span class="tg">cd</span> <span class="tw">web_cliente2\</span></div>
-          <div><span class="tr">Error: Permission denied (publickey,NTFS)</span></div>
-          <div><span class="tc">sftp&gt;</span> <span class="blink"></span></div>
+      <div class="reveal-right">
+        <div class="terminal">
+          <div class="term-bar">
+            <div class="td td-r"></div>
+            <div class="td td-y"></div>
+            <div class="td td-g"></div>
+            <span class="term-title">OpenSSH — systemlinkhub.es</span>
+          </div>
+          <div class="term-body">
+            <div><span class="tc">C:\&gt;</span> <span class="tg">ssh</span> <span class="tb">-p 22</span> <span class="tw">cliente1@systemlinkhub.es</span></div>
+            <div><span class="ty">Connected to systemlinkhub.es (OpenSSH 9.x)</span></div>
+            <div><span class="tc">sftp&gt;</span> <span class="tg">ls</span></div>
+            <div><span class="tc">drwxr-x---</span> <span class="tw">web_cliente1\</span> <span class="tc">← sólo tu carpeta</span></div>
+            <div><span class="tc">sftp&gt;</span> <span class="tg">put</span> <span class="tw">index.html</span> <span class="tb">web_cliente1/</span></div>
+            <div><span class="ty">Uploading index.html → web_cliente1/</span></div>
+            <div><span class="tg">index.html</span> <span class="tc">100%  12 KB  NTFS OK ✓</span></div>
+            <div>&nbsp;</div>
+            <div><span class="tc">sftp&gt;</span> <span class="tg">cd</span> <span class="tw">web_cliente2\</span></div>
+            <div><span class="tr">Error: Permission denied (publickey,NTFS)</span></div>
+            <div><span class="tc">sftp&gt;</span> <span class="blink"></span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -490,53 +873,55 @@ footer{border-top:1px solid var(--border);padding:2.5rem 4vw;display:flex;justif
 
 <!-- RAID -->
 <section id="raid">
-  <div class="raid-header">
-    <div class="reveal-left">
-      <div class="label">Copias de seguridad</div>
-      <h2 class="big">RAID: tolerancia real a fallos</h2>
+  <div class="section-inner">
+    <div class="raid-header">
+      <div class="reveal-left">
+        <div class="label">Copias de seguridad</div>
+        <h2 class="big">RAID: tolerancia real a fallos</h2>
+      </div>
+      <p class="sub reveal-right">Implementamos RAID 1 por software con Disk Management en Windows Server — dos discos dinámicos NTFS en espejo. Verificamos que el sistema arranca con sólo uno activo.</p>
     </div>
-    <p class="sub reveal-right">Implementamos RAID 1 por software con Disk Management en Windows Server — dos discos dinámicos NTFS en espejo. Verificamos que el sistema arranca con sólo uno activo.</p>
-  </div>
 
-  <div class="raid-grid">
-    <div class="raid-card reveal" style="transition-delay:.05s">
-      <div class="raid-badge badge-our">Nuestro</div>
-      <div class="raid-level">RAID 1</div>
-      <div class="raid-name">Espejo total</div>
-      <p class="raid-desc">Copia exacta en dos discos. Si uno falla, el otro continúa sin interrupción. El más sencillo de configurar en Disk Management.</p>
-      <div class="bar-group">
-        <div class="bar-row"><span class="bar-lbl">Redundancia</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,var(--c1),var(--c2))"></div></div><span class="bar-pct">100%</span></div>
-        <div class="bar-row"><span class="bar-lbl">Velocidad</span><div class="bar-track"><div class="bar-fill" style="width:60%;background:linear-gradient(90deg,var(--c2),var(--c3))"></div></div><span class="bar-pct">60%</span></div>
+    <div class="raid-grid">
+      <div class="raid-card reveal" style="transition-delay:.05s">
+        <div class="raid-badge badge-our">Nuestro</div>
+        <div class="raid-level">RAID 1</div>
+        <div class="raid-name">Espejo total</div>
+        <p class="raid-desc">Copia exacta en dos discos. Si uno falla, el otro continúa sin interrupción. El más sencillo de configurar en Disk Management.</p>
+        <div class="bar-group">
+          <div class="bar-row"><span class="bar-lbl">Redundancia</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,var(--c1),var(--c2))"></div></div><span class="bar-pct">100%</span></div>
+          <div class="bar-row"><span class="bar-lbl">Velocidad</span><div class="bar-track"><div class="bar-fill" style="width:60%;background:linear-gradient(90deg,var(--c2),var(--c3))"></div></div><span class="bar-pct">60%</span></div>
+        </div>
       </div>
-    </div>
-    <div class="raid-card reveal" style="transition-delay:.1s">
-      <div class="raid-badge badge-opt">Opcional</div>
-      <div class="raid-level">RAID 5</div>
-      <div class="raid-name">Paridad distribuida</div>
-      <p class="raid-desc">Mínimo 3 discos. Equilibrio entre capacidad utilizable, velocidad y tolerancia a un fallo simultáneo.</p>
-      <div class="bar-group">
-        <div class="bar-row"><span class="bar-lbl">Redundancia</span><div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(90deg,var(--c1),var(--c2))"></div></div><span class="bar-pct">75%</span></div>
-        <div class="bar-row"><span class="bar-lbl">Velocidad</span><div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,var(--c2),var(--c3))"></div></div><span class="bar-pct">85%</span></div>
+      <div class="raid-card reveal" style="transition-delay:.1s">
+        <div class="raid-badge badge-opt">Opcional</div>
+        <div class="raid-level">RAID 5</div>
+        <div class="raid-name">Paridad distribuida</div>
+        <p class="raid-desc">Mínimo 3 discos. Equilibrio entre capacidad utilizable, velocidad y tolerancia a un fallo simultáneo.</p>
+        <div class="bar-group">
+          <div class="bar-row"><span class="bar-lbl">Redundancia</span><div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(90deg,var(--c1),var(--c2))"></div></div><span class="bar-pct">75%</span></div>
+          <div class="bar-row"><span class="bar-lbl">Velocidad</span><div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,var(--c2),var(--c3))"></div></div><span class="bar-pct">85%</span></div>
+        </div>
       </div>
-    </div>
-    <div class="raid-card reveal" style="transition-delay:.15s">
-      <div class="raid-badge badge-opt">Opcional</div>
-      <div class="raid-level">RAID 6</div>
-      <div class="raid-name">Doble paridad</div>
-      <p class="raid-desc">Tolera dos fallos simultáneos. Ideal para entornos de producción con alta disponibilidad crítica.</p>
-      <div class="bar-group">
-        <div class="bar-row"><span class="bar-lbl">Redundancia</span><div class="bar-track"><div class="bar-fill" style="width:90%;background:linear-gradient(90deg,var(--c1),var(--c2))"></div></div><span class="bar-pct">90%</span></div>
-        <div class="bar-row"><span class="bar-lbl">Velocidad</span><div class="bar-track"><div class="bar-fill" style="width:70%;background:linear-gradient(90deg,var(--c2),var(--c3))"></div></div><span class="bar-pct">70%</span></div>
+      <div class="raid-card reveal" style="transition-delay:.15s">
+        <div class="raid-badge badge-opt">Opcional</div>
+        <div class="raid-level">RAID 6</div>
+        <div class="raid-name">Doble paridad</div>
+        <p class="raid-desc">Tolera dos fallos simultáneos. Ideal para entornos de producción con alta disponibilidad crítica.</p>
+        <div class="bar-group">
+          <div class="bar-row"><span class="bar-lbl">Redundancia</span><div class="bar-track"><div class="bar-fill" style="width:90%;background:linear-gradient(90deg,var(--c1),var(--c2))"></div></div><span class="bar-pct">90%</span></div>
+          <div class="bar-row"><span class="bar-lbl">Velocidad</span><div class="bar-track"><div class="bar-fill" style="width:70%;background:linear-gradient(90deg,var(--c2),var(--c3))"></div></div><span class="bar-pct">70%</span></div>
+        </div>
       </div>
-    </div>
-    <div class="raid-card reveal" style="transition-delay:.2s">
-      <div class="raid-badge badge-opt">Premium</div>
-      <div class="raid-level">RAID 10</div>
-      <div class="raid-name">Espejo + Stripe</div>
-      <p class="raid-desc">Lo mejor de RAID 1 y RAID 0. Máxima velocidad y redundancia robusta para servidores dedicados tipo PowerEdge R4715.</p>
-      <div class="bar-group">
-        <div class="bar-row"><span class="bar-lbl">Redundancia</span><div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,var(--c1),var(--c2))"></div></div><span class="bar-pct">85%</span></div>
-        <div class="bar-row"><span class="bar-lbl">Velocidad</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,var(--c2),var(--c3))"></div></div><span class="bar-pct">100%</span></div>
+      <div class="raid-card reveal" style="transition-delay:.2s">
+        <div class="raid-badge badge-opt">Premium</div>
+        <div class="raid-level">RAID 10</div>
+        <div class="raid-name">Espejo + Stripe</div>
+        <p class="raid-desc">Lo mejor de RAID 1 y RAID 0. Máxima velocidad y redundancia robusta para servidores dedicados tipo PowerEdge R4715.</p>
+        <div class="bar-group">
+          <div class="bar-row"><span class="bar-lbl">Redundancia</span><div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,var(--c1),var(--c2))"></div></div><span class="bar-pct">85%</span></div>
+          <div class="bar-row"><span class="bar-lbl">Velocidad</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,var(--c2),var(--c3))"></div></div><span class="bar-pct">100%</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -544,40 +929,42 @@ footer{border-top:1px solid var(--border);padding:2.5rem 4vw;display:flex;justif
 
 <!-- ENCRYPTION -->
 <section id="enc">
-  <div class="enc-split">
-    <div class="reveal-left">
-      <div class="label">Seguridad avanzada</div>
-      <h2 class="big">Cifrado que sólo tú controlas</h2>
-      <p class="sub">VeraCrypt protege tus volúmenes con AES-256. Open source, auditado, sin backdoors. Nadie accede a tus datos aunque tenga acceso físico al servidor.</p>
-      <div class="enc-features">
-        <div class="enc-feat">
-          <div class="feat-icon">🔑</div>
-          <div><h4>AES-256 bit</h4><p>El mismo estándar usado por organismos gubernamentales. Auditado por OSTIF sin hallazgos críticos.</p></div>
-        </div>
-        <div class="enc-feat">
-          <div class="feat-icon">🧅</div>
-          <div><h4>Volúmenes ocultos</h4><p>Plausible deniability: un volumen puede contener datos de señuelo y datos reales con contraseñas distintas.</p></div>
-        </div>
-        <div class="enc-feat">
-          <div class="feat-icon">⚡</div>
-          <div><h4>Cifrado en tiempo real</h4><p>Las aplicaciones trabajan con normalidad. El cifrado y descifrado ocurren de forma transparente al vuelo.</p></div>
-        </div>
-        <div class="enc-feat">
-          <div class="feat-icon">✅</div>
-          <div><h4>Open Source verificado</h4><p>Código público en GitHub. Sin licencias, sin puertas traseras, sin acceso de terceros. Tú eres el único dueño.</p></div>
+  <div class="section-inner">
+    <div class="enc-split">
+      <div class="reveal-left">
+        <div class="label">Seguridad avanzada</div>
+        <h2 class="big">Cifrado que sólo tú controlas</h2>
+        <p class="sub">VeraCrypt protege tus volúmenes con AES-256. Open source, auditado, sin backdoors. Nadie accede a tus datos aunque tenga acceso físico al servidor.</p>
+        <div class="enc-features">
+          <div class="enc-feat">
+            <div class="feat-icon">🔑</div>
+            <div><h4>AES-256 bit</h4><p>El mismo estándar usado por organismos gubernamentales. Auditado por OSTIF sin hallazgos críticos.</p></div>
+          </div>
+          <div class="enc-feat">
+            <div class="feat-icon">🧅</div>
+            <div><h4>Volúmenes ocultos</h4><p>Plausible deniability: un volumen puede contener datos de señuelo y datos reales con contraseñas distintas.</p></div>
+          </div>
+          <div class="enc-feat">
+            <div class="feat-icon">⚡</div>
+            <div><h4>Cifrado en tiempo real</h4><p>Las aplicaciones trabajan con normalidad. El cifrado y descifrado ocurren de forma transparente al vuelo.</p></div>
+          </div>
+          <div class="enc-feat">
+            <div class="feat-icon">🛡️</div>
+            <div><h4>Sin backdoors</h4><p>Código abierto verificable. Imposible de comprometer sin la clave. Sin puertas traseras gubernamentales.</p></div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="enc-visual reveal-right">
-      <div class="enc-ring-wrap">
-        <div class="enc-ring ring-1"></div>
-        <div class="enc-ring ring-2"></div>
-        <div class="enc-ring ring-3"></div>
-        <div class="enc-core">🔐</div>
-      </div>
-      <div class="vera-pill">
-        <strong>Powered by VeraCrypt</strong>
-        <span>Referencia open source en cifrado de disco completo</span>
+      <div class="enc-visual reveal-right">
+        <div class="enc-ring-wrap">
+          <div class="enc-ring ring-1"></div>
+          <div class="enc-ring ring-2"></div>
+          <div class="enc-ring ring-3"></div>
+          <div class="enc-core">🔐</div>
+        </div>
+        <div class="vera-pill">
+          <strong>Powered by VeraCrypt</strong>
+          <span>Referencia open source en cifrado de disco completo</span>
+        </div>
       </div>
     </div>
   </div>
@@ -585,177 +972,185 @@ footer{border-top:1px solid var(--border);padding:2.5rem 4vw;display:flex;justif
 
 <!-- TEAM -->
 <section id="equipo">
-  <div class="label reveal">El equipo</div>
-  <h2 class="big reveal">Mike, Alejandro & Maxwell</h2>
-  <p class="sub reveal">Estudiantes de SMR que han diseñado, implementado y documentado esta infraestructura TIC de cero como proyecto de TFG.</p>
+  <div class="section-inner">
+    <div class="label reveal">El equipo</div>
+    <h2 class="big reveal">Mike, Alejandro &amp; Maxwell</h2>
+    <p class="sub reveal">Estudiantes de SMR que han diseñado, implementado y documentado esta infraestructura TIC de cero como proyecto de TFG.</p>
 
-  <div class="team-grid">
-    <div class="team-card reveal" style="transition-delay:.05s">
-      <div class="team-avatar">M</div>
-      <h3>Mike</h3>
-      <div class="team-role">Seguridad & Desarrollo Web</div>
-      <p>Implementación de OpenSSH SFTP, cifrado VeraCrypt y gestión de permisos NTFS. Desarrollo de las páginas web corporativas de los clientes.</p>
-      <div class="team-tags">
-        <span class="chip">OpenSSH</span>
-        <span class="chip">VeraCrypt</span>
-        <span class="chip">HTML/CSS</span>
+    <div class="team-grid">
+      <div class="team-card reveal" style="transition-delay:.05s">
+        <div class="team-avatar">M</div>
+        <h3>Mike</h3>
+        <div class="team-role">Seguridad &amp; Desarrollo Web</div>
+        <p>Implementación de OpenSSH SFTP, cifrado VeraCrypt y gestión de permisos NTFS. Desarrollo de las páginas web corporativas de los clientes.</p>
+        <div class="team-tags">
+          <span class="chip">OpenSSH</span>
+          <span class="chip">VeraCrypt</span>
+          <span class="chip">HTML/CSS</span>
+        </div>
       </div>
-    </div>
-    <div class="team-card reveal" style="transition-delay:.1s">
-      <div class="team-avatar" style="background:linear-gradient(135deg,var(--c2),var(--c3))">A</div>
-      <h3>Alejandro</h3>
-      <div class="team-role">Redes & Seguridad</div>
-      <p>Diseño de topología en Cisco Packet Tracer. Configuración del Firewall ASA, reglas de acceso, routing RIP y segmentación de redes por cliente.</p>
-      <div class="team-tags">
-        <span class="chip">Cisco ASA</span>
-        <span class="chip">Packet Tracer</span>
-        <span class="chip">RIP v2</span>
+      <div class="team-card reveal" style="transition-delay:.1s">
+        <div class="team-avatar" style="background:linear-gradient(135deg,var(--c2),var(--c3))">A</div>
+        <h3>Alejandro</h3>
+        <div class="team-role">Redes &amp; Seguridad</div>
+        <p>Diseño de topología en Cisco Packet Tracer. Configuración del Firewall ASA, reglas de acceso, routing RIP y segmentación de redes por cliente.</p>
+        <div class="team-tags">
+          <span class="chip">Cisco ASA</span>
+          <span class="chip">Packet Tracer</span>
+          <span class="chip">RIP v2</span>
+        </div>
       </div>
-    </div>
-    <div class="team-card reveal" style="transition-delay:.15s">
-      <div class="team-avatar" style="background:linear-gradient(135deg,var(--c3),#e040fb)">M</div>
-      <h3>Maxwell</h3>
-      <div class="team-role">Sistemas & Infraestructura</div>
-      <p>Configuración de Windows Server, RAID 1 por software y Disk Management. Implementación del servidor web IIS y hardening del sistema operativo.</p>
-      <div class="team-tags">
-        <span class="chip">Windows Server</span>
-        <span class="chip">RAID 1</span>
-        <span class="chip">IIS</span>
+      <div class="team-card reveal" style="transition-delay:.15s">
+        <div class="team-avatar" style="background:linear-gradient(135deg,var(--c3),#e040fb)">M</div>
+        <h3>Maxwell</h3>
+        <div class="team-role">Sistemas &amp; Infraestructura</div>
+        <p>Configuración de Windows Server, RAID 1 por software y Disk Management. Implementación del servidor web IIS y hardening del sistema operativo.</p>
+        <div class="team-tags">
+          <span class="chip">Windows Server</span>
+          <span class="chip">RAID 1</span>
+          <span class="chip">IIS</span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- PROCESS -->
-<section id="proceso" style="background:var(--bg2)">
-  <div class="label reveal" style="justify-content:center">Cómo trabajamos</div>
-  <h2 class="big reveal" style="text-align:center;margin:0 auto">De cero a seguro en 4 fases</h2>
-  <div class="steps-track">
-    <div class="step-item reveal" style="transition-delay:.05s">
-      <div class="step-num">01</div>
-      <h4>Diseño de red</h4>
-      <p>Topología completa en Cisco Packet Tracer: Router público, ASA, DNS, servidores web y redes de clientes.</p>
-    </div>
-    <div class="step-item reveal" style="transition-delay:.1s">
-      <div class="step-num">02</div>
-      <h4>Servidor base</h4>
-      <p>Windows Server en VirtualBox. RAID 1 con Disk Management. Hardening: usuarios no-root, SSH seguro, UFW.</p>
-    </div>
-    <div class="step-item reveal" style="transition-delay:.15s">
-      <div class="step-num">03</div>
-      <h4>Servicios activos</h4>
-      <p>IIS web + SSL, OpenSSH SFTP, DNS interno y cifrado VeraCrypt sobre los volúmenes de datos de clientes.</p>
-    </div>
-    <div class="step-item reveal" style="transition-delay:.2s">
-      <div class="step-num">04</div>
-      <h4>Pruebas & entrega</h4>
-      <p>Simulacro de fallo de disco, test de permisos SFTP, auditoría de firewall y documentación técnica completa.</p>
+<section id="proceso">
+  <div class="section-inner">
+    <div class="label reveal" style="justify-content:center">Cómo trabajamos</div>
+    <h2 class="big reveal" style="text-align:center;margin:0 auto">De cero a seguro en 4 fases</h2>
+    <div class="steps-track">
+      <div class="step-item reveal" style="transition-delay:.05s">
+        <div class="step-num">01</div>
+        <h4>Diseño de red</h4>
+        <p>Topología completa en Cisco Packet Tracer: Router público, ASA, DNS, servidores web y redes de clientes.</p>
+      </div>
+      <div class="step-item reveal" style="transition-delay:.1s">
+        <div class="step-num">02</div>
+        <h4>Servidor base</h4>
+        <p>Windows Server en VirtualBox. RAID 1 con Disk Management. Hardening: usuarios no-root, SSH seguro, UFW.</p>
+      </div>
+      <div class="step-item reveal" style="transition-delay:.15s">
+        <div class="step-num">03</div>
+        <h4>Servicios activos</h4>
+        <p>IIS web + SSL, OpenSSH SFTP, DNS interno y cifrado VeraCrypt sobre los volúmenes de datos de clientes.</p>
+      </div>
+      <div class="step-item reveal" style="transition-delay:.2s">
+        <div class="step-num">04</div>
+        <h4>Pruebas &amp; entrega</h4>
+        <p>Simulacro de fallo de disco, test de permisos SFTP, auditoría de firewall y documentación técnica completa.</p>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- PRICING -->
 <section id="precios">
-  <div class="label reveal" style="justify-content:center">Tarifas</div>
-  <h2 class="big reveal" style="text-align:center;margin:0 auto">Planes sin sorpresas</h2>
-  <p class="sub reveal" style="text-align:center;margin:1rem auto 0">IVA no incluido. Simulación de modelo de negocio real documentada en el TFG.</p>
+  <div class="section-inner">
+    <div class="label reveal" style="justify-content:center">Tarifas</div>
+    <h2 class="big reveal" style="text-align:center;margin:0 auto">Planes sin sorpresas</h2>
+    <p class="sub reveal" style="text-align:center;margin:1rem auto 0">IVA no incluido. Simulación de modelo de negocio real documentada en el TFG.</p>
 
-  <div class="pricing-grid">
-    <div class="plan-card reveal" style="transition-delay:.05s">
-      <div class="plan-tier">Arranque</div>
-      <div class="plan-price-block"><div class="plan-amount"><sup>€</sup>29</div><span class="plan-period">/mes</span></div>
-      <p class="plan-headline">Para PYMES pequeñas que necesitan presencia online segura.</p>
-      <ul class="plan-feats">
-        <li>Hosting IIS en Windows Server</li>
-        <li>Certificado SSL/TLS</li>
-        <li>SFTP OpenSSH — 1 usuario</li>
-        <li>DNS con dominio local</li>
-        <li class="no">RAID 1 configurado</li>
-        <li class="no">Encriptación VeraCrypt</li>
-      </ul>
-      <a href="#contacto" class="plan-btn plan-btn-outline">Contactar →</a>
-    </div>
-    <div class="plan-card highlight reveal" style="transition-delay:.1s">
-      <div class="highlight-badge">Más popular</div>
-      <div class="plan-tier">PYME Completo</div>
-      <div class="plan-price-block"><div class="plan-amount"><sup>€</sup>79</div><span class="plan-period">/mes</span></div>
-      <p class="plan-headline">Todo lo que necesita una empresa para operar con seguridad real.</p>
-      <ul class="plan-feats">
-        <li>Hosting IIS + Virtual Hosts</li>
-        <li>SSL/TLS + Firewall ASA</li>
-        <li>SFTP multi‑usuario (NTFS)</li>
-        <li>RAID 1 por software</li>
-        <li>Encriptación VeraCrypt AES-256</li>
-        <li>DNS interno + backup servidor</li>
-      </ul>
-      <a href="#contacto" class="plan-btn plan-btn-fill">Empezar →</a>
-    </div>
-    <div class="plan-card reveal" style="transition-delay:.15s">
-      <div class="plan-tier">Infraestructura</div>
-      <div class="plan-price-block"><div class="plan-amount" style="font-size:2rem;letter-spacing:-1px">A medida</div></div>
-      <p class="plan-headline">Hardware dedicado. Dell PowerEdge R4715 con AMD EPYC y PERC H965i.</p>
-      <ul class="plan-feats">
-        <li>Servidor físico dedicado</li>
-        <li>AMD EPYC · 64 GB RAM · NVMe 3.84TB</li>
-        <li>RAID hardware PERC H965i</li>
-        <li>SFTP + replicación geográfica</li>
-        <li>VeraCrypt + auditoría completa</li>
-        <li>SLA empresarial personalizado</li>
-      </ul>
-      <a href="#contacto" class="plan-btn plan-btn-outline">Solicitar presupuesto →</a>
+    <div class="pricing-grid">
+      <div class="plan-card reveal" style="transition-delay:.05s">
+        <div class="plan-tier">Arranque</div>
+        <div class="plan-price-block"><div class="plan-amount"><sup>€</sup>29</div><span class="plan-period">/mes</span></div>
+        <p class="plan-headline">Para PYMES pequeñas que necesitan presencia online segura.</p>
+        <ul class="plan-feats">
+          <li>Hosting IIS en Windows Server</li>
+          <li>Certificado SSL/TLS</li>
+          <li>SFTP OpenSSH — 1 usuario</li>
+          <li>DNS con dominio local</li>
+          <li class="no">RAID 1 configurado</li>
+          <li class="no">Encriptación VeraCrypt</li>
+        </ul>
+        <a href="#contacto" class="plan-btn plan-btn-outline">Contactar →</a>
+      </div>
+      <div class="plan-card highlight reveal" style="transition-delay:.1s">
+        <div class="highlight-badge">Más popular</div>
+        <div class="plan-tier">PYME Completo</div>
+        <div class="plan-price-block"><div class="plan-amount"><sup>€</sup>79</div><span class="plan-period">/mes</span></div>
+        <p class="plan-headline">Todo lo que necesita una empresa para operar con seguridad real.</p>
+        <ul class="plan-feats">
+          <li>Hosting IIS + Virtual Hosts</li>
+          <li>SSL/TLS + Firewall ASA</li>
+          <li>SFTP multi‑usuario (NTFS)</li>
+          <li>RAID 1 por software</li>
+          <li>Encriptación VeraCrypt AES-256</li>
+          <li>DNS interno + backup servidor</li>
+        </ul>
+        <a href="#contacto" class="plan-btn plan-btn-fill">Empezar →</a>
+      </div>
+      <div class="plan-card reveal" style="transition-delay:.15s">
+        <div class="plan-tier">Infraestructura</div>
+        <div class="plan-price-block"><div class="plan-amount" style="font-size:1.9rem;letter-spacing:-.5px">A medida</div></div>
+        <p class="plan-headline">Hardware dedicado. Dell PowerEdge R4715 con AMD EPYC y PERC H965i.</p>
+        <ul class="plan-feats">
+          <li>Servidor físico dedicado</li>
+          <li>AMD EPYC · 64 GB RAM · NVMe 3.84TB</li>
+          <li>RAID hardware PERC H965i</li>
+          <li>SFTP + replicación geográfica</li>
+          <li>VeraCrypt + auditoría completa</li>
+          <li>SLA empresarial personalizado</li>
+        </ul>
+        <a href="#contacto" class="plan-btn plan-btn-outline">Solicitar presupuesto →</a>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- CONTACT -->
 <section id="contacto">
-  <div class="contact-grid">
-    <div class="reveal-left">
-      <div class="label">Contacto</div>
-      <h2 class="big">Cuéntanos tu proyecto</h2>
-      <p class="sub">Somos Mike, Alejandro y Maxwell. Te preparamos una propuesta a medida en menos de 24 horas.</p>
-      <div class="contact-meta">
-        <div class="meta-item">
-          <div class="meta-ico">📧</div>
-          <div><h4>Email</h4><p>hola@systemlinkhub.es</p></div>
-        </div>
-        <div class="meta-item">
-          <div class="meta-ico">👥</div>
-          <div><h4>Equipo</h4><p>Mike · Alejandro · Maxwell — SMR</p></div>
-        </div>
-        <div class="meta-item">
-          <div class="meta-ico">🛠️</div>
-          <div><h4>Stack tecnológico</h4><p>Windows Server · VirtualBox · Cisco PT · VeraCrypt · OpenSSH · IIS</p></div>
-        </div>
-        <div class="meta-item">
-          <div class="meta-ico">🖥️</div>
-          <div><h4>Hardware de referencia</h4><p>Dell PowerEdge R4715 · AMD EPYC 9015 · 64 GB DDR5 · NVMe 3.84 TB</p></div>
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="reveal-left">
+        <div class="label">Contacto</div>
+        <h2 class="big">Cuéntanos tu proyecto</h2>
+        <p class="sub">Somos Mike, Alejandro y Maxwell. Te preparamos una propuesta a medida en menos de 24 horas.</p>
+        <div class="contact-meta">
+          <div class="meta-item">
+            <div class="meta-ico">📧</div>
+            <div><h4>Email</h4><p>hola@systemlinkhub.es</p></div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-ico">👥</div>
+            <div><h4>Equipo</h4><p>Mike · Alejandro · Maxwell — SMR</p></div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-ico">🛠️</div>
+            <div><h4>Stack tecnológico</h4><p>Windows Server · VirtualBox · Cisco PT · VeraCrypt · OpenSSH · IIS</p></div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-ico">🖥️</div>
+            <div><h4>Hardware de referencia</h4><p>Dell PowerEdge R4715 · AMD EPYC 9015 · 64 GB DDR5 · NVMe 3.84 TB</p></div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="reveal-right">
-      <div class="form-grid">
-        <div class="form-row-2">
-          <div class="form-field"><label>Nombre</label><input type="text" placeholder="Tu nombre"/></div>
-          <div class="form-field"><label>Empresa</label><input type="text" placeholder="Tu empresa"/></div>
+      <div class="reveal-right">
+        <div class="form-grid">
+          <div class="form-row-2">
+            <div class="form-field"><label>Nombre</label><input type="text" placeholder="Tu nombre"/></div>
+            <div class="form-field"><label>Empresa</label><input type="text" placeholder="Tu empresa"/></div>
+          </div>
+          <div class="form-field"><label>Email</label><input type="email" placeholder="tu@email.com"/></div>
+          <div class="form-field">
+            <label>Servicio</label>
+            <select>
+              <option value="">Selecciona un servicio...</option>
+              <option>Hosting Web (IIS)</option>
+              <option>SFTP OpenSSH</option>
+              <option>RAID 1 por software</option>
+              <option>Encriptación VeraCrypt</option>
+              <option>Solución completa PYME</option>
+              <option>Infraestructura dedicada</option>
+            </select>
+          </div>
+          <div class="form-field"><label>Mensaje</label><textarea placeholder="Cuéntanos qué necesitas..."></textarea></div>
+          <button class="send-btn" onclick="this.textContent='✓ Mensaje enviado';this.disabled=true">
+            Enviar mensaje →
+          </button>
         </div>
-        <div class="form-field"><label>Email</label><input type="email" placeholder="tu@email.com"/></div>
-        <div class="form-field">
-          <label>Servicio</label>
-          <select>
-            <option value="">Selecciona un servicio...</option>
-            <option>Hosting Web (IIS)</option>
-            <option>SFTP OpenSSH</option>
-            <option>RAID 1 por software</option>
-            <option>Encriptación VeraCrypt</option>
-            <option>Solución completa PYME</option>
-            <option>Infraestructura dedicada</option>
-          </select>
-        </div>
-        <div class="form-field"><label>Mensaje</label><textarea placeholder="Cuéntanos qué necesitas..."></textarea></div>
-        <button class="send-btn" onclick="this.textContent='✓ Mensaje enviado';this.style.opacity='.65';this.disabled=true">
-          Enviar mensaje →
-        </button>
       </div>
     </div>
   </div>
@@ -764,7 +1159,7 @@ footer{border-top:1px solid var(--border);padding:2.5rem 4vw;display:flex;justif
 <!-- FOOTER -->
 <footer>
   <div class="footer-copy">
-    <div><span style="font-family:'Clash Display',sans-serif;font-weight:700;font-size:1rem">SystemLink Hub</span></div>
+    <div><span style="font-family:'Clash Display',sans-serif;font-weight:700;font-size:.95rem">SystemLink Hub</span></div>
     <div>© 2025 · <strong>Mike · Alejandro · Maxwell</strong> — Proyecto TFG SMR</div>
     <div style="margin-top:2px">Tecnologías: Windows Server · VeraCrypt · OpenSSH · IIS · Cisco ASA · VirtualBox</div>
   </div>
@@ -776,65 +1171,55 @@ footer{border-top:1px solid var(--border);padding:2.5rem 4vw;display:flex;justif
 </footer>
 
 <script>
-// Custom cursor
-const cur = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{
-  mx=e.clientX; my=e.clientY;
-  cur.style.transform=`translate(${mx-5}px,${my-5}px)`;
-});
-function animRing(){
-  rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
-  ring.style.transform=`translate(${rx-18}px,${ry-18}px)`;
-  requestAnimationFrame(animRing);
-}
-animRing();
-document.querySelectorAll('a,button,.raid-card,.bento-card,.team-card,.enc-feat,.check-item').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cur.style.transform+=' scale(2)';ring.style.opacity='0';});
-  el.addEventListener('mouseleave',()=>{cur.style.transform=cur.style.transform.replace(' scale(2)','');ring.style.opacity='1';});
+// Nav scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
 });
 
-// Nav scroll
-const nav=document.getElementById('nav');
-window.addEventListener('scroll',()=>{
-  nav.classList.toggle('scrolled',window.scrollY>40);
+// Hamburger menu
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+  mobileMenu.classList.toggle('open');
+});
+mobileMenu.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => mobileMenu.classList.remove('open'));
 });
 
 // Scroll reveal
-const ro=new IntersectionObserver(entries=>{
-  entries.forEach((e,i)=>{
-    if(e.isIntersecting){
-      setTimeout(()=>e.target.classList.add('in'),e.target.dataset.delay||0);
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('in'), e.target.dataset.delay || 0);
       ro.unobserve(e.target);
     }
   });
-},{threshold:.1});
-document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>ro.observe(el));
+}, { threshold: .1 });
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => ro.observe(el));
 
 // Bar animations
-const bro=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.querySelectorAll('.bar-fill').forEach(b=>{
-        const w=b.style.width; b.style.width='0';
-        requestAnimationFrame(()=>requestAnimationFrame(()=>{b.style.width=w;}));
+const bro = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.bar-fill').forEach(b => {
+        const w = b.style.width; b.style.width = '0';
+        requestAnimationFrame(() => requestAnimationFrame(() => { b.style.width = w; }));
       });
       bro.unobserve(e.target);
     }
   });
-},{threshold:.3});
-document.querySelectorAll('.raid-card').forEach(c=>bro.observe(c));
+}, { threshold: .3 });
+document.querySelectorAll('.raid-card').forEach(c => bro.observe(c));
 
 // Active nav highlight
-const sections=document.querySelectorAll('section[id]');
-const navAs=document.querySelectorAll('.nav-links a');
-window.addEventListener('scroll',()=>{
-  let cur='';
-  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-140)cur=s.id});
-  navAs.forEach(a=>{
-    const active=a.getAttribute('href')==='#'+cur;
-    a.style.color=active?'var(--text)':'';
+const sections = document.querySelectorAll('section[id]');
+const navAs = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 140) cur = s.id; });
+  navAs.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + cur ? 'var(--text)' : '';
   });
 });
 </script>
